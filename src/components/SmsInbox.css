@@ -1,0 +1,459 @@
+/* ========================================
+   SMS INBOX - BEST DESIGN
+   ======================================== */
+
+.sms-inbox {
+  background: var(--bg-card);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+/* ===== HEADER ===== */
+.sms-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--bg-input);
+  border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sms-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sms-header-left h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.sms-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-primary);
+  padding: 2px 10px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.sms-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sms-live {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.08);
+  padding: 3px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(46, 204, 113, 0.15);
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2ecc71;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.sms-updated {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+/* ===== FILTERS ===== */
+.sms-filters {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  transition: all 0.3s ease;
+}
+
+.search-box:focus-within {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.05);
+}
+
+.search-icon {
+  color: var(--text-muted);
+  margin-right: 8px;
+  font-size: 14px;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-primary);
+  padding: 4px 0;
+}
+
+.search-box input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.clear-btn:active {
+  transform: scale(0.8);
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 4px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  background: var(--bg-input);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-btn:active {
+  transform: scale(0.95);
+}
+
+.filter-btn.active {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  background: rgba(108, 99, 255, 0.05);
+}
+
+.filter-btn:hover {
+  border-color: var(--accent-cyan);
+}
+
+/* ===== SMS LIST ===== */
+.sms-list {
+  padding: 8px 12px 12px;
+  max-height: 600px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ===== SMS ITEM ===== */
+.sms-item {
+  background: var(--bg-input);
+  border-radius: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.sms-item:hover {
+  border-color: var(--accent-cyan);
+}
+
+.sms-item.new {
+  border-left: 3px solid #2ecc71;
+  background: rgba(46, 204, 113, 0.02);
+}
+
+.new-badge {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 8px;
+  font-weight: 700;
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.08);
+  padding: 1px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(46, 204, 113, 0.15);
+}
+
+.sms-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.sms-sender {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sender-icon {
+  font-size: 14px;
+}
+
+.sender-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.type-badge {
+  font-size: 8px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 10px;
+}
+
+.type-badge.otp {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.type-badge.transaction {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.08);
+  border: 1px solid rgba(46, 204, 113, 0.15);
+}
+
+.type-badge.bank {
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.type-badge.promo {
+  color: #f472b6;
+  background: rgba(244, 114, 182, 0.08);
+  border: 1px solid rgba(244, 114, 182, 0.15);
+}
+
+.type-badge.personal {
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.sms-time {
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.sms-message {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 4px 0 8px;
+  word-break: break-word;
+}
+
+.sms-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sms-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-muted);
+}
+
+.tag.otp-tag {
+  color: #f59e0b;
+  border-color: rgba(245, 158, 11, 0.2);
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.tag.amount-tag {
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.2);
+  background: rgba(46, 204, 113, 0.05);
+}
+
+.tag.time-tag {
+  color: var(--text-muted);
+}
+
+.sms-id {
+  font-size: 8px;
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+/* ===== EMPTY STATE ===== */
+.sms-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.empty-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.sms-empty h3 {
+  font-size: 16px;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.sms-empty p {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+/* ===== LOADING ===== */
+.sms-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 12px;
+  color: var(--text-muted);
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===== FOOTER BAR ===== */
+.sms-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-top: 1px solid var(--border-color);
+  font-size: 9px;
+  color: var(--text-muted);
+  background: var(--bg-input);
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* ===== SCROLLBAR ===== */
+.sms-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sms-list::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+.sms-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+.sms-list::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 374px) {
+  .sms-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .sms-header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .sms-item-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .sms-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .filter-buttons {
+    gap: 3px;
+  }
+  
+  .filter-btn {
+    font-size: 9px;
+    padding: 3px 8px;
+  }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+/* Dark Mode */
+[data-theme="dark"] .sms-item {
+  background: #1a1f26;
+}
+
+[data-theme="dark"] .sms-item.new {
+  background: rgba(46, 204, 113, 0.03);
+}

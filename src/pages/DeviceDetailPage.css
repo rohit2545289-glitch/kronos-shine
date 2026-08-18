@@ -1,0 +1,728 @@
+/* ================================================================
+   DEVICE DETAIL PAGE - CLEAN & ORGANIZED
+   ================================================================ */
+
+/* ================================================================
+   MAIN PAGE CONTAINER
+   ================================================================ */
+.device-main-page {
+  padding: 8px 10px 20px;
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+  background: var(--bg-primary);
+  min-height: 100vh;
+}
+
+/* ================================================================
+   LOADING / ERROR
+   ================================================================ */
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 12px;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.page-error {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.error-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.page-error h2 {
+  color: var(--text-primary);
+}
+
+/* ================================================================
+   HEADER
+   ================================================================ */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0 10px;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.back-btn:active {
+  background: var(--bg-input);
+  transform: scale(0.96);
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.device-id {
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--bg-input);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-family: 'Courier New', monospace;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot.online {
+  background: #2ecc71;
+  animation: pulse-dot 2s infinite;
+  box-shadow: 0 0 16px rgba(46, 204, 113, 0.3);
+}
+
+.status-dot.offline {
+  background: #e74c3c;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+/* ================================================================
+   DEVICE INFO CARD - COMPACT
+   ================================================================ */
+.device-info-card-compact {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+
+.device-info-card-header-compact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.device-info-left-compact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.device-icon-compact {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.device-info-compact {
+  flex: 1;
+  min-width: 0;
+}
+
+.device-name-compact {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.device-tags-compact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.tag-status-compact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.tag-status-compact.online {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.08);
+}
+
+.tag-status-compact.offline {
+  color: #95a5a6;
+  background: rgba(149, 165, 166, 0.08);
+}
+
+.tag-status-compact .dot-compact {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.tag-status-compact.online .dot-compact {
+  background: #2ecc71;
+  animation: pulse-dot-sm 1.5s ease-in-out infinite;
+}
+
+.tag-status-compact.offline .dot-compact {
+  background: #95a5a6;
+}
+
+@keyframes pulse-dot-sm {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.tag-screen-compact {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 8px;
+}
+
+.tag-screen-compact.on {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.08);
+}
+
+.tag-screen-compact.off {
+  color: #95a5a6;
+  background: rgba(149, 165, 166, 0.08);
+}
+
+.tag-serial-compact {
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 8px;
+  color: var(--text-muted);
+  background: var(--bg-input);
+}
+
+/* ================================================================
+   FAVORITE BUTTON - TOP RIGHT
+   ================================================================ */
+.favorite-btn-compact {
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.favorite-btn-compact:hover {
+  transform: scale(1.2);
+  color: #f1c40f;
+}
+
+.favorite-btn-compact.active {
+  color: #f1c40f;
+  animation: starPop 0.4s ease;
+}
+
+.favorite-btn-compact:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+@keyframes starPop {
+  0% { transform: scale(1) rotate(0deg); }
+  30% { transform: scale(1.4) rotate(-15deg); }
+  60% { transform: scale(0.9) rotate(10deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* ================================================================
+   QUICK STATS - COLLAPSIBLE
+   ================================================================ */
+.quick-stats-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.quick-stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: var(--bg-input);
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+}
+
+.quick-stats-header:hover {
+  background: var(--bg-hover);
+}
+
+.quick-stats-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quick-stats-toggle {
+  font-size: 10px;
+  color: var(--text-muted);
+  transition: transform 0.3s ease;
+}
+
+.quick-stats-card.expanded .quick-stats-toggle {
+  transform: rotate(180deg);
+}
+
+.quick-stats-body {
+  overflow: hidden;
+  transition: all 0.3s ease;
+  max-height: 0;
+  padding: 0 12px;
+}
+
+.quick-stats-card.expanded .quick-stats-body {
+  max-height: 600px;
+  padding: 8px 12px 12px;
+}
+
+.quick-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.quick-stats-grid .stat-item {
+  background: var(--bg-input);
+  border-radius: 6px;
+  padding: 4px 4px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.quick-stats-grid .stat-icon {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 1px;
+}
+
+.quick-stats-grid .stat-value {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.device-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+.device-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 6px;
+  background: var(--bg-input);
+  border-radius: 4px;
+  font-size: 9px;
+}
+
+.device-detail-label {
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.device-detail-value {
+  color: var(--text-primary);
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  font-size: 8px;
+  max-width: 60%;
+  text-align: right;
+  word-break: break-all;
+}
+
+/* ================================================================
+   BUTTON CARD
+   ================================================================ */
+.button-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.button-card-header {
+  padding: 4px 12px;
+  background: var(--bg-input);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.button-card-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ================================================================
+   BUTTON GRID - RESPONSIVE
+   ================================================================ */
+.button-grid-horizontal-small {
+  display: grid;
+  gap: 4px;
+  padding: 6px 8px;
+  width: 100%;
+}
+
+/* PC/Laptop - 9 columns */
+@media (min-width: 768px) {
+  .button-grid-horizontal-small {
+    grid-template-columns: repeat(9, 1fr);
+  }
+}
+
+/* Tablet - 6 columns */
+@media (min-width: 481px) and (max-width: 767px) {
+  .button-grid-horizontal-small {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* Mobile - 4 columns */
+@media (max-width: 480px) {
+  .button-grid-horizontal-small {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 4px 6px;
+  }
+}
+
+/* Small Mobile - 3 columns */
+@media (max-width: 374px) {
+  .button-grid-horizontal-small {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    padding: 3px 4px;
+  }
+}
+
+/* ================================================================
+   BUTTONS
+   ================================================================ */
+.menu-btn-sm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 4px;
+  border: 1.5px solid var(--border-color, #e2e8f0);
+  border-radius: 8px;
+  background: var(--bg-input, #f8fafc);
+  color: var(--text-muted, #94a3b8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  min-height: 48px;
+}
+
+.menu-btn-sm:active {
+  transform: scale(0.95);
+}
+
+.menu-btn-sm.active {
+  border-color: #6c63ff;
+  background: rgba(108, 99, 255, 0.08);
+  color: #6c63ff;
+}
+
+.btn-icon-sm {
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.btn-label-sm {
+  font-size: 8px;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 1.2;
+  letter-spacing: 0.3px;
+}
+
+/* Button Color Variants */
+.menu-btn-sm.card.active {
+  border-color: #2ecc71;
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.08);
+}
+
+.menu-btn-sm.netbank.active {
+  border-color: #f59e0b;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.menu-btn-sm.permissions.active {
+  border-color: #8b5cf6;
+  color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.08);
+}
+
+.menu-btn-sm.verification.active {
+  border-color: #3b82f6;
+  color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.menu-btn-sm.upi.active {
+  border-color: #ec4899;
+  color: #ec4899;
+  background: rgba(236, 72, 153, 0.08);
+}
+
+.menu-btn-sm.callforward.active {
+  border-color: #14b8a6;
+  color: #14b8a6;
+  background: rgba(20, 184, 166, 0.08);
+}
+
+.menu-btn-sm.sendsms.active {
+  border-color: #10b981;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+
+.menu-btn-sm.insms.active {
+  border-color: #6c63ff;
+  color: #6c63ff;
+  background: rgba(108, 99, 255, 0.08);
+}
+
+/* mCall Button - Special */
+.menu-btn-sm.mcall {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white !important;
+  border-color: transparent !important;
+}
+
+.menu-btn-sm.mcall .btn-icon-sm,
+.menu-btn-sm.mcall .btn-label-sm {
+  color: white !important;
+}
+
+.menu-btn-sm.mcall.active {
+  background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%) !important;
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+}
+
+/* ================================================================
+   SMS & DYNAMIC CONTENT
+   ================================================================ */
+.sms-container {
+  margin-top: 0;
+}
+
+.dynamic-content {
+  margin-bottom: 8px;
+}
+
+/* ================================================================
+   RESPONSIVE - EXTRA
+   ================================================================ */
+@media (max-width: 480px) {
+  .device-info-card-compact {
+    padding: 6px 10px;
+  }
+
+  .device-icon-compact {
+    font-size: 22px;
+  }
+
+  .device-name-compact {
+    font-size: 13px;
+  }
+
+  .device-tags-compact {
+    gap: 3px;
+  }
+
+  .tag-status-compact {
+    font-size: 8px;
+    padding: 1px 5px;
+  }
+
+  .tag-screen-compact {
+    font-size: 8px;
+    padding: 1px 5px;
+  }
+
+  .tag-serial-compact {
+    font-size: 8px;
+    padding: 1px 5px;
+  }
+
+  .favorite-btn-compact {
+    font-size: 18px;
+    padding: 1px 4px;
+  }
+
+  .device-info-left-compact {
+    gap: 6px;
+  }
+
+  .menu-btn-sm {
+    min-height: 40px;
+    padding: 4px 2px;
+  }
+
+  .btn-icon-sm {
+    font-size: 14px;
+  }
+
+  .btn-label-sm {
+    font-size: 7px;
+  }
+
+  .quick-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .device-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 374px) {
+  .device-info-card-compact {
+    padding: 4px 8px;
+  }
+
+  .device-icon-compact {
+    font-size: 18px;
+  }
+
+  .device-name-compact {
+    font-size: 11px;
+  }
+
+  .device-tags-compact {
+    gap: 2px;
+  }
+
+  .tag-status-compact {
+    font-size: 7px;
+    padding: 0px 4px;
+  }
+
+  .tag-screen-compact {
+    font-size: 7px;
+    padding: 0px 4px;
+  }
+
+  .tag-serial-compact {
+    font-size: 7px;
+    padding: 0px 4px;
+  }
+
+  .favorite-btn-compact {
+    font-size: 16px;
+    padding: 1px 3px;
+  }
+
+  .menu-btn-sm {
+    min-height: 36px;
+    padding: 3px 2px;
+  }
+
+  .btn-icon-sm {
+    font-size: 12px;
+  }
+
+  .btn-label-sm {
+    font-size: 6px;
+  }
+}
+
+@media (min-width: 769px) {
+  .device-info-card-compact {
+    padding: 12px 16px;
+  }
+
+  .device-name-compact {
+    font-size: 18px;
+  }
+
+  .favorite-btn-compact {
+    font-size: 26px;
+  }
+
+  .device-icon-compact {
+    font-size: 34px;
+  }
+}

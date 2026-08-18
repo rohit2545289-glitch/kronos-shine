@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>📱 Device Dashboard - Online Status</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js">
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js">
+    </script>
+
+    <style>
+        /* ================================================================
+           RESET & BASE
+           ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a2e;
+            min-height: 100vh;
+            padding: 16px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ================================================================
+           HEADER
+           ================================================================ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .header h1 span {
+            color: #6c63ff;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .last-update {
+            font-size: 12px;
+            color: #8a8aaa;
+            background: #f0f2f5;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .refresh-btn {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #6c63ff;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .refresh-btn:hover {
+            background: #5a52d5;
+            transform: translateY(-1px);
+        }
+
+        .refresh-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ================================================================
+           STATS CARDS - UPDATED
+           ================================================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            font-size: 24px;
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f2f5;
+        }
+
+        .stat-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+
+        .stat-info p {
+            font-size: 10px;
+            color: #8a8aaa;
+            font-weight: 500;
+        }
+
+        .stat-card.online .stat-icon {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+        .stat-card.offline .stat-icon {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+        .stat-card.total .stat-icon {
+            background: rgba(108, 99, 255, 0.1);
+            color: #6c63ff;
+        }
+        .stat-card.responsive .stat-icon {
+            background: rgba(46, 204, 113, 0.1);
+            color: #2ecc71;
+        }
+        .stat-card.hours .stat-icon {
+            background: rgba(241, 196, 15, 0.1);
+            color: #f1c40f;
+        }
+
+        /* ================================================================
+           DEVICE LIST
+           ================================================================ */
+        .device-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 12px;
+        }
+
+        .device-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border-left: 4px solid #e74c3c;
+            transition: all 0.3s ease;
+        }
+
+        .device-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .device-card.online {
+            border-left-color: #2ecc71;
+        }
+
+        .device-card.offline {
+            border-left-color: #e74c3c;
+            opacity: 0.7;
+        }
+
+        .device-card.within-2hours {
+            border-left-color: #f1c40f;
+            background: rgba(241, 196, 15, 0.03);
+        }
+
+        .device-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .device-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .device-status {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .device-status.online {
+            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.08);
+        }
+
+        .device-status.offline {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.06);
+        }
+
+        .device-status.within-2hours {
+            color: #f1c40f;
+            background: rgba(241, 196, 15, 0.08);
+        }
+
+        .device-id {
+            font-size: 10px;
+            color: #8a8aaa;
+            font-family: 'Courier New', monospace;
+            margin-bottom: 4px;
+        }
+
+        .device-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4px;
+            font-size: 11px;
+            color: #4a4a6a;
+        }
+
+        .device-details span {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 6px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .device-details .label {
+            color: #8a8aaa;
+        }
+
+        .device-details .value {
+            font-weight: 600;
+        }
+
+        /* ================================================================
+           TIME INFO - NEW
+           ================================================================ */
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #f0f2f5;
+            font-size: 11px;
+        }
+
+        .time-ago {
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
+        }
+
+        .time-ago.just-now {
+            color: #2ecc71;
+            background: rgba(46, 204, 113, 0.08);
+        }
+        .time-ago.minutes {
+            color: #f1c40f;
+            background: rgba(241, 196, 15, 0.08);
+        }
+        .time-ago.hours {
+            color: #e67e22;
+            background: rgba(230, 126, 34, 0.08);
+        }
+        .time-ago.days {
+            color: #e74c3c;
+            background: rgba(231, 76, 60, 0.06);
+        }
+
+        .last-seen-full {
+            color: #8a8aaa;
+            font-size: 10px;
+        }
+
+        /* ================================================================
+           LOADING
+           ================================================================ */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #8a8aaa;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #6c63ff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 12px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .device-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .stat-card {
+                padding: 10px 12px;
+            }
+            .stat-info h3 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📱 Device <span>Dashboard</span></h1>
+            <div class="header-right">
+                <span class="last-update" id="lastUpdate">⏳ Last update: --</span>
+                <button class="refresh-btn" id="refreshBtn" onclick="fetchDevices()">
+                    🔄 Refresh
+                </button>
+            </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card total">
+                <div class="stat-icon">📱</div>
+                <div class="stat-info">
+                    <h3 id="totalCount">0</h3>
+                    <p>Total Devices</p>
+                </div>
+            </div>
+            <div class="stat-card online">
+                <div class="stat-icon">🟢</div>
+                <div class="stat-info">
+                    <h3 id="onlineCount">0</h3>
+                    <p>Online (10 min)</p>
+                </div>
+            </div>
+            <div class="stat-card offline">
+                <div class="stat-icon">🔴</div>
+                <div class="stat-info">
+                    <h3 id="offlineCount">0</h3>
+                    <p>Offline</p>
+                </div>
+            </div>
+            <div class="stat-card hours">
+                <div class="stat-icon">⏱️</div>
+                <div class="stat-info">
+                    <h3 id="hoursCount">0</h3>
+                    <p>Within 2 Hours</p>
+                </div>
+            </div>
+            <div class="stat-card responsive">
+                <div class="stat-icon">✅</div>
+                <div class="stat-info">
+                    <h3 id="responsiveCount">0</h3>
+                    <p>Responsive</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEVICE LIST -->
+        <div id="deviceGrid" class="device-grid">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>📡 Loading devices...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =============================================================
+        // FIREBASE CONFIG
+        // =============================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyC2TWQ005L6p4z66I4N6LTgQ15YCsp3z-I",
+            authDomain: "token-7-4cc70.firebaseapp.com",
+            databaseURL: "https://token-7-4cc70-default-rtdb.firebaseio.com",
+            projectId: "token-7-4cc70",
+            storageBucket: "token-7-4cc70.firebasestorage.app",
+            messagingSenderId: "742134236292",
+            appId: "1:742134236292:web:342425cbb24682c7412ed1",
+            measurementId: "G-WCHF3DNVN0"
+        };
+
+        // =============================================================
+        // INIT FIREBASE
+        // =============================================================
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // =============================================================
+        // THRESHOLDS
+        // =============================================================
+        const ONLINE_THRESHOLD = 6000000; // 10 minutes
+        const TWO_HOURS = 7200000; // 2 hours
+
+        let devices = [];
+
+        // =============================================================
+        // DOM REFS
+        // =============================================================
+        const totalCountEl = document.getElementById('totalCount');
+        const onlineCountEl = document.getElementById('onlineCount');
+        const offlineCountEl = document.getElementById('offlineCount');
+        const hoursCountEl = document.getElementById('hoursCount');
+        const responsiveCountEl = document.getElementById('responsiveCount');
+        const deviceGridEl = document.getElementById('deviceGrid');
+        const lastUpdateEl = document.getElementById('lastUpdate');
+        const refreshBtn = document.getElementById('refreshBtn');
+
+        // =============================================================
+        // HELPERS
+        // =============================================================
+        function getTimeAgo(timestamp) {
+            if (!timestamp) return { text: 'Never', class: 'days' };
+            const diff = Date.now() - timestamp;
+
+            if (diff < 60000) return { text: 'Just now', class: 'just-now' };
+            if (diff < 3600000) {
+                const mins = Math.floor(diff / 60000);
+                return { text: `${mins}m ago`, class: 'minutes' };
+            }
+            if (diff < 86400000) {
+                const hours = Math.floor(diff / 3600000);
+                return { text: `${hours}h ago`, class: 'hours' };
+            }
+            const days = Math.floor(diff / 86400000);
+            return { text: `${days}d ago`, class: 'days' };
+        }
+
+        function formatDate(timestamp) {
+            if (!timestamp) return 'Never';
+            return new Date(timestamp).toLocaleString('en-IN', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        // =============================================================
+        // FETCH DEVICES
+        // =============================================================
+        function fetchDevices() {
+            refreshBtn.disabled = true;
+            refreshBtn.textContent = '⏳ Loading...';
+            deviceGridEl.innerHTML =
+                `<div class="loading"><div class="spinner"></div><p>📡 Loading devices...</p></div>`;
+
+            const devicesRef = database.ref('devices');
+
+            devicesRef.once('value').then((snapshot) => {
+                const data = snapshot.val();
+
+                if (!data) {
+                    deviceGridEl.innerHTML =
+                        `<div class="loading"><p>📭 No devices found</p></div>`;
+                    updateStats([]);
+                    refreshBtn.disabled = false;
+                    refreshBtn.textContent = '🔄 Refresh';
+                    return;
+                }
+
+                devices = Object.keys(data).map(key => ({
+                    id: key,
+                    ...data[key]
+                }));
+
+                devices.sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0));
+
+                renderDevices(devices);
+                updateStats(devices);
+                updateLastUpdateTime();
+
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = '🔄 Refresh';
+
+            }).catch((error) => {
+                console.error('❌ Firebase error:', error);
+                deviceGridEl.innerHTML =
+                    `<div class="loading"><p>❌ Error loading devices: ${error.message}</p></div>`;
+                refreshBtn.disabled = false;
+                refreshBtn.textContent = '🔄 Refresh';
+            });
+        }
+
+        // =============================================================
+        // RENDER DEVICES
+        // =============================================================
+        function renderDevices(devicesArray) {
+            if (devicesArray.length === 0) {
+                deviceGridEl.innerHTML =
+                    `<div class="loading"><p>📭 No devices found</p></div>`;
+                return;
+            }
+
+            let html = '';
+
+            devicesArray.forEach((device) => {
+                const lastSeen = device.lastSeen || 0;
+                const diff = Date.now() - lastSeen;
+
+                const isOnline = diff <= ONLINE_THRESHOLD;
+                const isWithin2Hours = diff <= TWO_HOURS;
+
+                let statusClass = 'offline';
+                let statusText = '🔴 Offline';
+
+                if (isOnline) {
+                    statusClass = 'online';
+                    statusText = '🟢 Online';
+                } else if (isWithin2Hours) {
+                    statusClass = 'within-2hours';
+                    statusText = '🟡 Within 2h';
+                }
+
+                const timeAgo = getTimeAgo(lastSeen);
+                const fullDate = formatDate(lastSeen);
+
+                const battery = device.battery || 'N/A';
+                const brand = device.brand || 'Unknown';
+                const model = device.model || 'Device';
+                const ip = device.ip || 'N/A';
+                const androidVersion = device.android_version || 'N/A';
+
+                html += `
+                            <div class="device-card ${statusClass}">
+                                <div class="device-header">
+                                    <span class="device-name">${brand} ${model}</span>
+                                    <span class="device-status ${statusClass}">${statusText}</span>
+                                </div>
+                                <div class="device-id">🔑 ${device.id?.slice(0, 8)}...</div>
+                                <div class="device-details">
+                                    <span><span class="label">📶 IP</span><span class="value">${ip}</span></span>
+                                    <span><span class="label">🔋 Battery</span><span class="value">${battery}</span></span>
+                                    <span><span class="label">🤖 Version</span><span class="value">v${androidVersion}</span></span>
+                                    <span><span class="label">📱 Serial</span><span class="value">#${device.serialNo || 'N/A'}</span></span>
+                                </div>
+                                <div class="time-info">
+                                    <span class="time-ago ${timeAgo.class}">${timeAgo.text}</span>
+                                    <span class="last-seen-full">${fullDate}</span>
+                                </div>
+                            </div>
+                        `;
+            });
+
+            deviceGridEl.innerHTML = html;
+        }
+
+        // =============================================================
+        // UPDATE STATS
+        // =============================================================
+        function updateStats(devicesArray) {
+            const now = Date.now();
+
+            const online = devicesArray.filter(d => {
+                const diff = now - (d.lastSeen || 0);
+                return diff <= ONLINE_THRESHOLD;
+            }).length;
+
+            const within2Hours = devicesArray.filter(d => {
+                const diff = now - (d.lastSeen || 0);
+                return diff <= TWO_HOURS;
+            }).length;
+
+            const total = devicesArray.length;
+            const offline = total - online;
+
+            totalCountEl.textContent = total;
+            onlineCountEl.textContent = online;
+            offlineCountEl.textContent = offline;
+            hoursCountEl.textContent = within2Hours;
+            responsiveCountEl.textContent = online;
+        }
+
+        // =============================================================
+        // UPDATE LAST UPDATE TIME
+        // =============================================================
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('en-IN', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            lastUpdateEl.textContent = `⏳ Last update: ${timeStr}`;
+        }
+
+        // =============================================================
+        // AUTO REFRESH - HAR 30 SECOND
+        // =============================================================
+        setInterval(() => {
+            fetchDevices();
+        }, 30000);
+
+        // =============================================================
+        // INITIAL LOAD
+        // =============================================================
+        fetchDevices();
+
+        // =============================================================
+        // KEYBOARD SHORTCUT - R for Refresh
+        // =============================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'r' || e.key === 'R') {
+                if (!e.ctrlKey && !e.metaKey) {
+                    e.preventDefault();
+                    fetchDevices();
+                }
+            }
+        });
+
+        console.log('✅ Device Dashboard loaded!');
+        console.log('📊 ONLINE_THRESHOLD: 10 minutes (600,000 ms)');
+        console.log('📊 TWO_HOURS: 2 hours (7,200,000 ms)');
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,570 @@
+/* ========================================
+   COMMON DETAIL PAGES CSS - MODERN DESIGN
+   ======================================== */
+
+/* ===== COMPACT OVERRIDES FOR EMBEDDED PAGES ===== */
+.detail-page {
+  padding: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  background: transparent !important;
+  min-height: auto !important;
+}
+
+/* ===== HEADER ===== */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 14px;
+}
+
+.page-header h2 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+}
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--bg-input);
+  padding: 2px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.badge.success {
+  color: #2ecc71;
+  border-color: rgba(46, 204, 113, 0.2);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  color: var(--text-primary);
+}
+
+/* ===== LOADING ===== */
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px !important;
+  padding: 10px 0 !important;
+  gap: 8px;
+}
+
+.page-loading .loading-spinner {
+  width: 24px !important;
+  height: 24px !important;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.page-loading p {
+  font-size: 12px !important;
+  color: var(--text-muted);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== DETAIL CARD - MODERN ===== */
+.detail-card {
+  background: var(--bg-card);
+  border-radius: 10px !important;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease;
+}
+
+.detail-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 10px !important;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.2s ease;
+}
+
+.detail-row:hover {
+  background: var(--bg-hover);
+}
+
+.detail-row:last-child {
+  border-bottom: none !important;
+}
+
+.detail-row.full {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.detail-row.full .value {
+  text-align: left;
+  width: 100%;
+}
+
+.detail-row .label {
+  font-size: 10px !important;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.detail-row .value {
+  font-size: 11px !important;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-all;
+  text-align: right;
+}
+
+/* Sensitive Data Styling */
+.detail-row .value.sensitive {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+.detail-row .value.pin {
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+  color: #e74c3c;
+}
+
+.detail-row .value.amount {
+  font-size: 14px !important;
+  font-weight: 800;
+  color: #2ecc71;
+}
+
+.detail-row .value.monospace {
+  font-family: 'Courier New', monospace;
+}
+
+.detail-row.granted {
+  background: rgba(46, 204, 113, 0.03);
+  border-left: 2px solid #2ecc71;
+}
+
+.detail-row.granted:hover {
+  background: rgba(46, 204, 113, 0.06);
+}
+
+.detail-row.denied {
+  background: rgba(231, 76, 60, 0.03);
+  border-left: 2px solid #e74c3c;
+}
+
+.detail-row.denied:hover {
+  background: rgba(231, 76, 60, 0.06);
+}
+
+/* ===== STATUS BADGE - MODERN ===== */
+.status-badge {
+  font-size: 10px !important;
+  font-weight: 700;
+  padding: 2px 12px !important;
+  border-radius: 20px !important;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.status-badge.success {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.status-badge.success:hover {
+  background: rgba(46, 204, 113, 0.15);
+}
+
+.status-badge.failed {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.08);
+  border: 1px solid rgba(231, 76, 60, 0.15);
+}
+
+.status-badge.failed:hover {
+  background: rgba(231, 76, 60, 0.12);
+}
+
+.status-badge.pending {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.status-badge.pending:hover {
+  background: rgba(245, 158, 11, 0.12);
+}
+
+/* ===== PERMISSIONS STATS - MODERN ===== */
+.perm-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px !important;
+  margin-bottom: 8px !important;
+}
+
+.perm-stat {
+  background: var(--bg-card);
+  border-radius: 8px !important;
+  padding: 8px 6px !important;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.perm-stat:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.perm-stat span {
+  display: block;
+  font-size: 8px !important;
+  color: var(--text-muted);
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.perm-stat strong {
+  font-size: 16px !important;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.perm-stat .stat-total {
+  color: var(--text-primary);
+}
+
+.perm-stat .stat-granted {
+  color: #2ecc71;
+}
+
+.perm-stat .stat-denied {
+  color: #e74c3c;
+}
+
+.perm-stat .stat-percent {
+  color: #f59e0b;
+}
+
+/* ===== EMPTY STATE - MODERN ===== */
+.empty-state {
+  text-align: center;
+  padding: 24px !important;
+  font-size: 12px !important;
+  color: var(--text-muted);
+  background: var(--bg-card);
+  border-radius: 10px;
+  border: 1px dashed var(--border-color);
+}
+
+.empty-state .empty-icon {
+  font-size: 36px !important;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.empty-state h3 {
+  font-size: 14px !important;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.empty-state p {
+  font-size: 12px !important;
+  opacity: 0.6;
+}
+
+/* ===== UPI PAYMENTS STYLES - MODERN ===== */
+
+.highlight-card {
+  border: 1px solid rgba(46, 204, 113, 0.25) !important;
+  background: rgba(46, 204, 113, 0.02);
+  box-shadow: 0 2px 8px rgba(46, 204, 113, 0.05);
+}
+
+.highlight-card:hover {
+  box-shadow: 0 4px 16px rgba(46, 204, 113, 0.08);
+}
+
+.card-header-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px !important;
+  background: var(--bg-input);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.latest-badge {
+  font-size: 10px !important;
+  font-weight: 700;
+  color: #2ecc71;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.latest-badge::before {
+  content: '●';
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.amount {
+  font-size: 16px !important;
+  font-weight: 800;
+  color: #2ecc71;
+}
+
+/* Payment List - Modern */
+.payment-list {
+  margin-top: 8px !important;
+}
+
+.list-title {
+  font-size: 11px !important;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px !important;
+  padding-bottom: 4px !important;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.payment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px !important;
+  background: var(--bg-card);
+  border-radius: 8px !important;
+  border: 1px solid var(--border-color);
+  margin-bottom: 4px !important;
+  transition: all 0.3s ease;
+}
+
+.payment-item:hover {
+  border-color: var(--accent-cyan);
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.payment-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.payment-icon {
+  font-size: 16px !important;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-input);
+  border-radius: 6px;
+}
+
+.payment-amount {
+  font-size: 12px !important;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.payment-status-text {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 9px !important;
+  color: var(--text-muted);
+}
+
+.status-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-dot.success {
+  background: #2ecc71;
+  box-shadow: 0 0 8px rgba(46, 204, 113, 0.3);
+}
+
+.status-dot.failed {
+  background: #e74c3c;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.3);
+}
+
+.payment-right {
+  text-align: right;
+}
+
+.payment-time {
+  font-size: 9px !important;
+  color: var(--text-muted);
+}
+
+.payment-pin {
+  font-size: 8px !important;
+  color: var(--text-muted);
+  opacity: 0.6;
+  font-family: 'Courier New', monospace;
+}
+
+/* ===== VERIFICATION PAGE - MODERN ===== */
+.verification-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.verification-status .status-icon {
+  font-size: 14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 374px) {
+  .perm-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px !important;
+  }
+
+  .detail-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 6px 8px !important;
+  }
+
+  .detail-row .value {
+    text-align: left;
+    width: 100%;
+  }
+
+  .payment-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .payment-right {
+    text-align: left;
+    width: 100%;
+  }
+  
+  .perm-stat strong {
+    font-size: 14px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .detail-row {
+    padding: 4px 8px !important;
+  }
+  
+  .detail-row .label {
+    font-size: 9px !important;
+  }
+  
+  .detail-row .value {
+    font-size: 10px !important;
+  }
+}
+
+@media (min-width: 481px) {
+  /* For tablets/desktop, keep compact but readable */
+  .detail-row {
+    padding: 5px 12px !important;
+  }
+  
+  .perm-stat {
+    padding: 10px 8px !important;
+  }
+  
+  .perm-stat strong {
+    font-size: 18px !important;
+  }
+}
+
+/* ===== DARK THEME ADJUSTMENTS ===== */
+[data-theme="dark"] .detail-row.granted {
+  background: rgba(46, 204, 113, 0.05);
+}
+
+[data-theme="dark"] .detail-row.denied {
+  background: rgba(231, 76, 60, 0.05);
+}
+
+[data-theme="dark"] .payment-item:hover {
+  border-color: #6c63ff;
+}
+
+[data-theme="dark"] .empty-state {
+  background: var(--bg-card);
+}
+
+/* ===== SMOOTH SCROLL ===== */
+.detail-card {
+  scroll-behavior: smooth;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.detail-card {
+  animation: fadeInUp 0.3s ease;
+}
