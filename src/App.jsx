@@ -7,7 +7,7 @@ import AdminManagement from './components/AdminManagement';
 import AdminDeviceManager from './components/AdminDeviceManager';
 import SessionManager from './components/SessionManager';
 import Login from './pages/Login';
-import Setup from './pages/Setup';
+//import Setup from './pages/Setup';
 import ChangePassword from './pages/ChangePassword';
 import UserMenu from './components/UserMenu';
 import { ThemeProvider, useTheme } from './context/ThemeContext';
@@ -275,10 +275,10 @@ function AppContent() {
 
       {/* ===== ROUTES ===== */}
       <div className="routes-container">
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/setup" element={<Setup />} />
-          <Route path="/login" element={<Login />} />
+       <Routes>
+  {/* Public Routes */}
+  {/* <Route path="/setup" element={<Setup />} /> */}  {/* Commented */}
+  <Route path="/login" element={<Login />} />
 
           {/* Protected Routes */}
           <Route
