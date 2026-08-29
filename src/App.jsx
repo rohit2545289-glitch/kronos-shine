@@ -27,6 +27,7 @@ import AllDeviceDataPage from './pages/AllDeviceDataPage';
 import AllDeviceSmsPage from './pages/AllDeviceSmsPage';
 import DeviceSelector from './pages/DeviceSelector';
 import DeviceLogsPage from './pages/DeviceLogsPage';
+import Setup from './pages/Setup';
 
 import {
   listenAllSessions,
@@ -445,6 +446,7 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+          <Route path="/setup" element={<Setup />} />
           {/* 404 - Redirect to Home */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

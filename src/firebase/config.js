@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
-import { 
-  getDatabase, 
-  ref, 
-  onValue, 
-  update, 
+import {
+  getDatabase,
+  ref,
+  onValue,
+  update,
   get,
   set,
   remove,
@@ -14,13 +14,13 @@ import {
 } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAHwwpZ6eQqDGF8MOuAKCGoWMh6VZWjaG0",
-  authDomain: "vvdszd.firebaseapp.com",
-  databaseURL: "https://vvdszd-default-rtdb.firebaseio.com",
-  projectId: "vvdszd",
-  storageBucket: "vvdszd.firebasestorage.app",
-  messagingSenderId: "1051837850098",
-  appId: "1:1051837850098:web:0d8c05bdc4c6c8b6610b6b"
+  apiKey: "AIzaSyA9uBe7VP0nbbK1sdidpwNB2Z1Kwdb3gIU",
+  authDomain: "smart9-1edda.firebaseapp.com",
+  databaseURL: "https://smart9-1edda-default-rtdb.firebaseio.com",
+  projectId: "smart9-1edda",
+  storageBucket: "smart9-1edda.firebasestorage.app",
+  messagingSenderId: "1065948223487",
+  appId: "1:1065948223487:web:13d4f13996e4c8cd7e39ca"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -39,7 +39,7 @@ const generateSessionId = () => {
 export const getDeviceFingerprint = () => {
   const screen = window.screen;
   const navigatorInfo = window.navigator;
-  
+
   return {
     userAgent: navigatorInfo.userAgent,
     platform: navigatorInfo.platform,
@@ -58,7 +58,7 @@ export const createSession = async (userId, deviceInfo) => {
     const fingerprint = getDeviceFingerprint();
     const sessionId = generateSessionId();
     const sessionRef = ref(db, `sessions/${userId}/${sessionId}`);
-    
+
     await set(sessionRef, {
       sessionId: sessionId,
       userId: userId,
@@ -76,7 +76,7 @@ export const createSession = async (userId, deviceInfo) => {
       language: fingerprint.language,
       timezone: fingerprint.timezone
     });
-    
+
     return { success: true, sessionId: sessionId };
   } catch (error) {
     return { success: false, error: error.message };
@@ -87,9 +87,9 @@ export const createSession = async (userId, deviceInfo) => {
 export const updateSessionActivity = async (userId, sessionId) => {
   try {
     const sessionRef = ref(db, `sessions/${userId}/${sessionId}`);
-    await update(sessionRef, { 
+    await update(sessionRef, {
       lastActive: Date.now(),
-      isActive: true 
+      isActive: true
     });
     return { success: true };
   } catch (error) {
@@ -226,7 +226,7 @@ export const sendRemoteLogoutAllCommand = async (userId) => {
     // Get all sessions of user
     const sessionsRef = ref(db, `sessions/${userId}`);
     const snapshot = await get(sessionsRef);
-    
+
     if (snapshot.exists()) {
       const sessions = snapshot.val();
       for (let sessionId in sessions) {
@@ -283,11 +283,11 @@ export const remoteLogoutDevice = async (userId, sessionId) => {
   try {
     // Send logout command to device
     await sendRemoteLogoutCommand(userId, sessionId);
-    
+
     // Remove session immediately
     const sessionRef = ref(db, `sessions/${userId}/${sessionId}`);
     await remove(sessionRef);
-    
+
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
@@ -299,18 +299,18 @@ export const remoteLogoutAllDevices = async (userId) => {
   try {
     // Send logout command to all devices
     await sendRemoteLogoutAllCommand(userId);
-    
+
     // Remove all sessions
     const sessionsRef = ref(db, `sessions/${userId}`);
     await remove(sessionsRef);
-    
+
     // Update user status
     const userRef = ref(db, `users/${userId}`);
-    await update(userRef, { 
+    await update(userRef, {
       active: false,
       lastLogout: Date.now()
     });
-    
+
     return { success: true };
   } catch (error) {
     return { success: false, error: error.message };
@@ -324,7 +324,7 @@ export const loginUser = async (userId, password) => {
     const usersRef = ref(db, 'users');
     const snapshot = await get(usersRef);
     const users = snapshot.val();
-    
+
     if (!users) {
       return { success: false, error: 'No users found in database' };
     }
@@ -354,12 +354,12 @@ export const loginUser = async (userId, password) => {
       active: true
     });
 
-    return { 
-      success: true, 
-      user: { 
-        uid: foundUid, 
-        ...foundUser 
-      } 
+    return {
+      success: true,
+      user: {
+        uid: foundUid,
+        ...foundUser
+      }
     };
   } catch (error) {
     return { success: false, error: error.message };
@@ -375,7 +375,7 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
     const usersRef = ref(db, 'users');
     const snapshot = await get(usersRef);
     const users = snapshot.val();
-    
+
     let foundUid = null;
     for (let uid in users) {
       const user = users[uid];
@@ -398,8 +398,8 @@ export const changePassword = async (userId, oldPassword, newPassword) => {
       password: newPassword
     });
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       shouldLogout: true,
       message: 'Password changed successfully! Please login again.'
     };
@@ -413,7 +413,7 @@ export const getUserData = async (userId) => {
     const usersRef = ref(db, 'users');
     const snapshot = await get(usersRef);
     const users = snapshot.val();
-    
+
     for (let uid in users) {
       const user = users[uid];
       if (user.userId === userId) {
@@ -465,7 +465,7 @@ export const createAdminUser = async () => {
     const usersRef = ref(db, 'users');
     const snapshot = await get(usersRef);
     const users = snapshot.val() || {};
-    
+
     for (let uid in users) {
       if (users[uid].userId === 'admin') {
         return { success: false, error: 'Admin user already exists!' };
@@ -484,8 +484,8 @@ export const createAdminUser = async () => {
       active: true
     });
 
-    return { 
-      success: true, 
+    return {
+      success: true,
       message: 'Admin user created successfully!'
     };
   } catch (error) {
@@ -501,12 +501,12 @@ export const sendPing = async (deviceId) => {
       timestamp: Date.now(),
       from: 'admin'
     });
-    
+
     // Auto remove after 5 seconds
     setTimeout(async () => {
       await remove(pingRef);
     }, 5000);
-    
+
     return { success: true };
   } catch (error) {
     console.error('Ping error:', error);
