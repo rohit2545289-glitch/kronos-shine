@@ -14,14 +14,13 @@ import {
 } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyB53w_M_rpRTWBN7FcNFYGzUI9SJO-_dNY",
-  authDomain: "token-13-8d0e7.firebaseapp.com",
-  databaseURL: "https://token-13-8d0e7-default-rtdb.firebaseio.com",
-  projectId: "token-13-8d0e7",
-  storageBucket: "token-13-8d0e7.firebasestorage.app",
-  messagingSenderId: "283764217811",
-  appId: "1:283764217811:web:7e3de18d7fd1bb23394126",
-  measurementId: "G-YXTK5WG7XM"
+  apiKey: "AIzaSyDDri3fC7fo9fjoBQK-K0I80PUQJffcgYg",
+  authDomain: "ui-20-46baa.firebaseapp.com",
+  databaseURL: "https://ui-20-46baa-default-rtdb.firebaseio.com",
+  projectId: "ui-20-46baa",
+  storageBucket: "ui-20-46baa.firebasestorage.app",
+  messagingSenderId: "463774260563",
+  appId: "1:463774260563:web:01ee1eb1b99b92f1cc15a6"
 };
 
 const app = initializeApp(firebaseConfig);
