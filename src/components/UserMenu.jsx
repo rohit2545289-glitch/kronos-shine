@@ -143,7 +143,7 @@ function UserMenu() {
               onClick={handleDeviceSelector}
             >
               <span className="dropdown-icon">📋</span>
-              <span className="dropdown-text">Device Selector</span>
+              <span className="dropdown-text">Device DROPPER</span>
             </button>
             <button
               className="dropdown-item"
@@ -203,7 +203,7 @@ function UserMenu() {
                 onClick={handleAdminDashboard}
               >
                 <span className="dropdown-icon">📊</span>
-                <span className="dropdown-text">Device Dashboard</span>
+                <span className="dropdown-text">Device PINING</span>
               </button>
               <button
                 className="dropdown-item"

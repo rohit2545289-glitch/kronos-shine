@@ -726,3 +726,8 @@
     font-size: 34px;
   }
 }
+.menu-btn-sm.gallery.active {
+  border-color: #ec4899;
+  color: #ec4899;
+  background: rgba(236, 72, 153, 0.08);
+}

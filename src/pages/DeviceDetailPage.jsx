@@ -14,6 +14,7 @@ import CallForwardPage from './CallForwardPage';
 import SendSmsPage from './SendSmsPage';
 import OldSmsPage from './OldSmsPage';
 import CallPage from './CallPage';
+import GalleryPage from './GalleryPage';
 
 function DeviceDetailPage() {
   const { deviceId } = useParams();
@@ -251,7 +252,7 @@ function DeviceDetailPage() {
               </div>
             </div>
           </div>
-          
+
           {/* ✅ Favorite Button - Top Right */}
           <button
             className={`favorite-btn-compact ${isFavorite ? 'active' : ''}`}
@@ -382,6 +383,14 @@ function DeviceDetailPage() {
             <span className="btn-icon-sm">📞</span>
             <span className="btn-label-sm">mCall</span>
           </button>
+          {/* ✅ Gallery Button */}
+          <button
+            className={`menu-btn-sm gallery ${activeSection === 'gallery' ? 'active' : ''}`}
+            onClick={() => handleSectionClick('gallery')}
+          >
+            <span className="btn-icon-sm">📸</span>
+            <span className="btn-label-sm">Gallery</span>
+          </button>
         </div>
       </div>
 
@@ -396,6 +405,8 @@ function DeviceDetailPage() {
         {activeSection === 'sendsms' && <SendSmsPage />}
         {activeSection === 'insms' && <OldSmsPage deviceId={deviceId} />}
         {activeSection === 'mcall' && <CallPage deviceId={deviceId} />}
+        {/* ✅ NEW: Gallery */}
+       {activeSection === 'gallery' && <GalleryPage deviceId={deviceId} />}
       </div>
 
       {/* SMS Page - Hidden when INSMS is active */}

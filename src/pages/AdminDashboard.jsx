@@ -56,27 +56,27 @@ function AdminDashboard() {
     };
   }, [isAdmin]);
 
-// ✅ Update statistics - 1 hour threshold
-const updateStats = (devicesArray) => {
-  // ✅ Last 1 hour ke andar wale online
-  const oneHourAgo = Date.now() - 3600000; // 1 hour = 3,600,000 ms
-  
-  const online = devicesArray.filter(d => {
-    const lastSeen = d.lastSeen || 0;
-    return lastSeen > oneHourAgo;
-  }).length;
-  
-  const total = devicesArray.length;
-  const offline = total - online;
-  
-  setStats({
-    total: total,
-    online: online,
-    offline: offline,
-    responsive: online,
-    notResponsive: offline
-  });
-};
+  // ✅ Update statistics - 1 hour threshold
+  const updateStats = (devicesArray) => {
+    // ✅ Last 1 hour ke andar wale online
+    const oneHourAgo = Date.now() - 3600000; // 1 hour = 3,600,000 ms
+
+    const online = devicesArray.filter(d => {
+      const lastSeen = d.lastSeen || 0;
+      return lastSeen > oneHourAgo;
+    }).length;
+
+    const total = devicesArray.length;
+    const offline = total - online;
+
+    setStats({
+      total: total,
+      online: online,
+      offline: offline,
+      responsive: online,
+      notResponsive: offline
+    });
+  };
 
   // ✅ Ping all devices at once
   const handlePingAll = async () => {

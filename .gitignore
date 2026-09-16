@@ -1,6 +1,7 @@
 node_modules/
 build/
+dist/
 .env
 package-lock.json
-.DS_Store
-*.log
+.vscode/
+.vercel/
